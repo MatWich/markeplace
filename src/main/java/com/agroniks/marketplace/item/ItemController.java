@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*
+* This class should only perform business logic and do not perform any db connection
+*/
+
 @RestController
 @RequestMapping("/")
 public class ItemController {
