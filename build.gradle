@@ -35,7 +35,8 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.security:spring-security-test'
 	// https://mvnrepository.com/artifact/com.tngtech.archunit/archunit
-	implementation 'com.tngtech.archunit:archunit:1.0.1'
+//	testImplementation 'com.tngtech.archunit:archunit-junit4:1.0.1'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:+'
 
 }
 
@@ -45,14 +46,14 @@ dependencyManagement {
 	}
 }
 
-tasks.named('contractTest') {
-	useJUnitPlatform()
-}
+//tasks.named('contractTest') {
+//	useJUnitPlatform()
+//}
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-contracts {
-}
+//contracts {
+//}
 
