@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.security:spring-security-test'
+	// https://mvnrepository.com/artifact/com.tngtech.archunit/archunit
+	implementation 'com.tngtech.archunit:archunit:1.0.1'
+
 }
 
 dependencyManagement {
