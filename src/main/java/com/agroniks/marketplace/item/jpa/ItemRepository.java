@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
-    String findByName(String name);
+    ItemEntity findByName(String name);
 }

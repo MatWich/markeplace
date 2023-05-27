@@ -26,4 +26,30 @@ public class ItemEntityService {
         return new ItemEntity(item.name(), item.description(), item.price());
     }
 
+    public Optional<ItemEntity> findByName(String name) {
+        return Optional.of(itemRepository.findByName(name));
+    }
+
+    public ItemEntity addNewItem(ItemEntity itemEntity) {
+        ItemEntity byName = itemRepository.findByName(itemEntity.getName());
+        if (byName != null) {
+            throw new ItemAlreadyExists("Item already in database");
+        } else {
+            itemRepository.save(itemEntity);
+            return itemRepository.findByName(itemEntity.getName());
+        }
+    }
+
+    public void deleteById(int id) {
+        itemRepository.deleteById(id);
+    }
+
+    public void updateById(int id, ItemEntity itemEntity) {
+        itemRepository.findById(id).stream().map(item -> {
+            item.setName(itemEntity.getName());
+            item.setDescription(itemEntity.getDescription());
+            item.setPrice(itemEntity.getPrice());
+            return itemRepository.save(item);
+        });
+    }
 }
