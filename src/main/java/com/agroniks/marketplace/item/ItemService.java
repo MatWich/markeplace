@@ -1,10 +1,11 @@
 package com.agroniks.marketplace.item;
 
 import com.agroniks.marketplace.item.jpa.ItemEntity;
+import com.agroniks.marketplace.item.jpa.ItemEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.Retention;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,17 +16,38 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
+    @Autowired
+    private ItemEntityService itemEntityService;
+
 
     /*
     * Take one ItemEntity and converts it into Item
     * */
-    public Item convert(ItemEntity itemEntity) {
+    private Item convert(ItemEntity itemEntity) {
         // for now, it will be sufficient
         return new Item(itemEntity.getName(), itemEntity.getDescription(), itemEntity.getPrice());
     }
 
-    public List<Item> convert(List<ItemEntity> itemEntities) {
+    private List<Item> convert(List<ItemEntity> itemEntities) {
         return itemEntities.stream().map(
                 this::convert).collect(Collectors.toList());
+    }
+
+    public Optional<List<Item>> getAllItemsBelowGivenPrice(double price) {
+        List<ItemEntity> itemsEntitiesBelowGivenPrice = itemEntityService.findAll().get()
+                .stream()
+                .filter(itemEntity -> itemEntity.getPrice() <= price)
+                .sorted(Comparator.comparingDouble(ItemEntity::getPrice))
+                .collect(Collectors.toList());
+        return Optional.of(convert(itemsEntitiesBelowGivenPrice));
+    }
+
+    public Optional<List<Item>> getAllItemsOverGivenPrice(double price) {
+        List<ItemEntity> itemsEntitiesOverGivenPrice = itemEntityService.findAll().get()
+                .stream()
+                .filter(itemEntity -> itemEntity.getPrice() >= price)
+                .sorted(Comparator.comparingDouble(ItemEntity::getPrice))
+                .collect(Collectors.toList());
+        return Optional.of(convert(itemsEntitiesOverGivenPrice));
     }
 }

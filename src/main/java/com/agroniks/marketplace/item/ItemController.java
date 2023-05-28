@@ -25,29 +25,14 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private ItemEntityService itemEntityService;
-
     @GetMapping("below/{price}")
     public ResponseEntity<List<Item>> getAllItemsBelowGivenPrice(@PathVariable double price) {
-        List<ItemEntity> itemsEntitiesBelowGivenPrice = itemEntityService.findAll().get()
-                .stream()
-                .filter(itemEntity -> itemEntity.getPrice() <= price)
-                .sorted(Comparator.comparingDouble(ItemEntity::getPrice))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.of(Optional.ofNullable(itemService.convert(itemsEntitiesBelowGivenPrice)));
+        return ResponseEntity.of(itemService.getAllItemsBelowGivenPrice(price));
     }
 
     @GetMapping("over/{price}")
     public ResponseEntity<List<Item>> getAllItemsOverGivenPrice(@PathVariable double price) {
-        List<ItemEntity> itemsEntitiesBelowGivenPrice = itemEntityService.findAll().get()
-                .stream()
-                .filter(itemEntity -> itemEntity.getPrice() >= price)
-                .sorted(Comparator.comparingDouble(ItemEntity::getPrice))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.of(Optional.ofNullable(itemService.convert(itemsEntitiesBelowGivenPrice)));
+        return ResponseEntity.of(itemService.getAllItemsOverGivenPrice(price));
     }
 
 }
