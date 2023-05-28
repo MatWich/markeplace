@@ -37,6 +37,17 @@ public class ItemBusinessTest {
         assertEquals(expected, itemService.getAllItemsOverGivenPrice(3.0).get().get(0));
     }
 
+    @Test
+    void shouldReturn2itemsThatPriceAreLowerThan2() {
+        // given:
+        List<ItemEntity> items = getData();
+        // when:
+        when(itemEntityService.findAll()).thenReturn(Optional.of(items));
+        // expected:
+        int expectedItemCount = 2;
+        assertEquals(expectedItemCount, itemService.getAllItemsBelowGivenPrice(3.0).get().size());
+    }
+
     private List<ItemEntity> getData() {
         List<ItemEntity> items = new ArrayList<>();
         items.add(new ItemEntity("Item1", "Item1", 1.1));
