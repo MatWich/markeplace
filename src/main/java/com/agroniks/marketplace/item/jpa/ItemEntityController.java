@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/persistance/item")
+@RequestMapping("/api/persistence/items")
 public class ItemEntityController {
 
     @Autowired
