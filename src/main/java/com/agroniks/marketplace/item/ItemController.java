@@ -21,13 +21,13 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("below/{value}")
-    public ResponseEntity<List<Item>> getAllItemsBelowGivenPrice(@PathVariable double price) {
-        return ResponseEntity.of(itemService.getAllItemsBelowGivenPrice(price));
+    public ResponseEntity<List<Item>> getAllItemsBelowGivenPrice(@PathVariable double value) {
+        return ResponseEntity.of(itemService.getAllItemsBelowGivenPrice(value));
     }
 
     @GetMapping("over/{value}")
-    public ResponseEntity<List<Item>> getAllItemsOverGivenPrice(@PathVariable double price) {
-        return ResponseEntity.of(itemService.getAllItemsOverGivenPrice(price));
+    public ResponseEntity<List<Item>> getAllItemsOverGivenPrice(@PathVariable double value) {
+        return ResponseEntity.of(itemService.getAllItemsOverGivenPrice(value));
     }
 
 }
