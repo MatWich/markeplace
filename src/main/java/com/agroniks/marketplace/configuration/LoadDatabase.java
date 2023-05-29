@@ -1,4 +1,4 @@
-package com.agroniks.marketplace;
+package com.agroniks.marketplace.configuration;
 
 import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemRepository;
