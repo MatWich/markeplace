@@ -21,13 +21,13 @@ public class ItemEntity {
 
     private String name;
 
-    public ItemEntity(String name, String description, double price) {
+    public ItemEntity(String name, String description, double value) {
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.value = value;
     }
 
     private String description;
-    private double price;
+    private double value;
 
 }

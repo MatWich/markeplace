@@ -23,7 +23,7 @@ public class ItemEntityService {
 
     /* There should not be more than one ItemEntity updated in the same request*/
     public ItemEntity convert(Item item) {
-        return new ItemEntity(item.name(), item.description(), item.price());
+        return new ItemEntity(item.name(), item.description(), item.value());
     }
 
     public Optional<ItemEntity> findByName(String name) {
@@ -48,7 +48,7 @@ public class ItemEntityService {
         itemRepository.findById(id).stream().map(item -> {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());
-            item.setPrice(itemEntity.getPrice());
+            item.setValue(itemEntity.getValue());
             return itemRepository.save(item);
         });
     }
