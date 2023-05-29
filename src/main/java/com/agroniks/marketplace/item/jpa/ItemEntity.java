@@ -1,9 +1,7 @@
 package com.agroniks.marketplace.item.jpa;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.agroniks.marketplace.auction.jpa.AuctionEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,7 @@ public class ItemEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private int id;
 
     private String name;
@@ -29,5 +28,9 @@ public class ItemEntity {
 
     private String description;
     private double worth;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auction_id", referencedColumnName = "id")
+    private AuctionEntity auction;
 
 }
