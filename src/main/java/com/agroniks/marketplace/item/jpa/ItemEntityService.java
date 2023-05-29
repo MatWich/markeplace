@@ -48,7 +48,7 @@ public class ItemEntityService {
         itemRepository.findById(id).stream().map(item -> {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());
-            item.setValue(itemEntity.getValue());
+            item.setWorth(itemEntity.getWorth());
             return itemRepository.save(item);
         });
     }
