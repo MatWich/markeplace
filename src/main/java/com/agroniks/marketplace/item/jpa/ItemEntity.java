@@ -22,11 +22,11 @@ public class ItemEntity {
 
     private String name;
     private String description;
-    private double worth;
-    public ItemEntity(String name, String description, double worth) {
+    private double value;
+    public ItemEntity(String name, String description, double value) {
         this.name = name;
         this.description = description;
-        this.worth = worth;
+        this.value = value;
     }
 
 }

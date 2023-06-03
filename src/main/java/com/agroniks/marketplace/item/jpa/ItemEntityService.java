@@ -1,6 +1,8 @@
 package com.agroniks.marketplace.item.jpa;
 
 import com.agroniks.marketplace.item.Item;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ItemEntityService {
 
     @Autowired
@@ -45,12 +48,15 @@ public class ItemEntityService {
         itemRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateById(UUID id, ItemEntity itemEntity) {
-        itemRepository.findById(id).stream().map(item -> {
+        log.info(itemEntity.toString());
+        itemRepository.findById(id)
+                .ifPresent(item -> {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());
-            item.setWorth(itemEntity.getWorth());
-            return itemRepository.save(item);
+            item.setValue(itemEntity.getValue());
+            itemRepository.save(item);
         });
     }
 }

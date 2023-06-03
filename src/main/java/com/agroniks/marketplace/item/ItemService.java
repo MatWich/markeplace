@@ -25,7 +25,7 @@ public class ItemService {
     * */
     private Item convert(ItemEntity itemEntity) {
         // for now, it will be sufficient
-        return new Item(itemEntity.getName(), itemEntity.getDescription(), itemEntity.getWorth());
+        return new Item(itemEntity.getName(), itemEntity.getDescription(), itemEntity.getValue());
     }
 
     private List<Item> convert(List<ItemEntity> itemEntities) {
@@ -36,8 +36,8 @@ public class ItemService {
     public Optional<List<Item>> getAllItemsBelowGivenPrice(double price) {
         List<ItemEntity> itemsEntitiesBelowGivenPrice = itemEntityService.findAll().get()
                 .stream()
-                .filter(itemEntity -> itemEntity.getWorth() <= price)
-                .sorted(Comparator.comparingDouble(ItemEntity::getWorth))
+                .filter(itemEntity -> itemEntity.getValue() <= price)
+                .sorted(Comparator.comparingDouble(ItemEntity::getValue))
                 .collect(Collectors.toList());
         return Optional.of(convert(itemsEntitiesBelowGivenPrice));
     }
@@ -45,8 +45,8 @@ public class ItemService {
     public Optional<List<Item>> getAllItemsOverGivenPrice(double price) {
         List<ItemEntity> itemsEntitiesOverGivenPrice = itemEntityService.findAll().get()
                 .stream()
-                .filter(itemEntity -> itemEntity.getWorth() >= price)
-                .sorted(Comparator.comparingDouble(ItemEntity::getWorth))
+                .filter(itemEntity -> itemEntity.getValue() >= price)
+                .sorted(Comparator.comparingDouble(ItemEntity::getValue))
                 .collect(Collectors.toList());
         return Optional.of(convert(itemsEntitiesOverGivenPrice));
     }

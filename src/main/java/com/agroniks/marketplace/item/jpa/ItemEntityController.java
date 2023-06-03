@@ -1,6 +1,7 @@
 package com.agroniks.marketplace.item.jpa;
 
 import com.agroniks.marketplace.item.Item;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/persistence/items")
+@Slf4j
 public class ItemEntityController {
 
     @Autowired
@@ -47,6 +49,7 @@ public class ItemEntityController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updateById(@PathVariable UUID id, @RequestBody Item item) {
+        log.info("Controller: " + item);
         itemEntityService.updateById(id, itemEntityService.convert(item));
         return ResponseEntity.noContent().build();
     }
