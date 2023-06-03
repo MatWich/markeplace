@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ItemEntityService {
@@ -17,7 +18,7 @@ public class ItemEntityService {
         return Optional.of(itemRepository.findAll());
     }
 
-    public Optional<ItemEntity> findById(int id) {
+    public Optional<ItemEntity> findById(UUID id) {
         return itemRepository.findById(id);
     }
 
@@ -40,11 +41,11 @@ public class ItemEntityService {
         }
     }
 
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         itemRepository.deleteById(id);
     }
 
-    public void updateById(int id, ItemEntity itemEntity) {
+    public void updateById(UUID id, ItemEntity itemEntity) {
         itemRepository.findById(id).stream().map(item -> {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());

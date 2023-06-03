@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/persistence/items")
@@ -23,7 +24,7 @@ public class ItemEntityController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ItemEntity> findById(@PathVariable int id) {
+    public ResponseEntity<ItemEntity> findById(@PathVariable UUID id) {
         return ResponseEntity.of(itemEntityService.findById(id));
     }
 
@@ -39,13 +40,13 @@ public class ItemEntityController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable int id) {
+    public ResponseEntity<Void> deleteItem(@PathVariable UUID id) {
         itemEntityService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateById(@PathVariable int id, @RequestBody Item item) {
+    public ResponseEntity<Void> updateById(@PathVariable UUID id, @RequestBody Item item) {
         itemEntityService.updateById(id, itemEntityService.convert(item));
         return ResponseEntity.noContent().build();
     }
