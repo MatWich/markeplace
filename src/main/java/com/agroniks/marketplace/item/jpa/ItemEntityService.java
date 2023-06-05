@@ -27,7 +27,7 @@ public class ItemEntityService {
 
     /* There should not be more than one ItemEntity updated in the same request*/
     public ItemEntity convert(Item item) {
-        return new ItemEntity(item.name(), item.description(), item.value());
+        return new ItemEntity(item.name(), item.description(), item.worth());
     }
 
     public Optional<ItemEntity> findByName(String name) {
@@ -55,7 +55,7 @@ public class ItemEntityService {
                 .ifPresent(item -> {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());
-            item.setValue(itemEntity.getValue());
+            item.setWorth(itemEntity.getWorth());
             itemRepository.save(item);
         });
     }

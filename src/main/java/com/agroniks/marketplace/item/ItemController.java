@@ -20,12 +20,12 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("below/{value}")
+    @GetMapping("below/{worth}")
     public ResponseEntity<List<Item>> getAllItemsBelowGivenPrice(@PathVariable double value) {
         return ResponseEntity.of(itemService.getAllItemsBelowGivenPrice(value));
     }
 
-    @GetMapping("over/{value}")
+    @GetMapping("over/{worth}")
     public ResponseEntity<List<Item>> getAllItemsOverGivenPrice(@PathVariable double value) {
         return ResponseEntity.of(itemService.getAllItemsOverGivenPrice(value));
     }
