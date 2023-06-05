@@ -34,12 +34,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.security:spring-security-test'
-	// https://mvnrepository.com/artifact/com.tngtech.archunit/archunit
-//	testImplementation 'com.tngtech.archunit:archunit-junit4:1.0.1'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:+'
-	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:5.3.1'
-	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
 
 
