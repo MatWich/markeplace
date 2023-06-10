@@ -41,8 +41,8 @@ public class UserEntityController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) {
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteUserById(@RequestParam UUID id) {
         // TODO: add X-MESSAGE header
         userEntityService.deleteById(id);
         return ResponseEntity.noContent().build();

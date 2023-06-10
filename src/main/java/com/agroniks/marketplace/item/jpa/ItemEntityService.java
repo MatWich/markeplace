@@ -39,7 +39,9 @@ public class ItemEntityService {
         if (byName != null) {
             throw new ItemAlreadyExists("Item already in database");
         } else {
+            itemEntity.setInfo(createNewItemInfoEntity(itemEntity));
             itemRepository.save(itemEntity);
+
             return itemRepository.findByName(itemEntity.getName());
         }
     }
@@ -56,7 +58,14 @@ public class ItemEntityService {
             item.setName(itemEntity.getName());
             item.setDescription(itemEntity.getDescription());
             item.setWorth(itemEntity.getWorth());
+            item.setInfo(itemEntity.getInfo());
             itemRepository.save(item);
         });
+    }
+
+    private ItemInfoEntity createNewItemInfoEntity(ItemEntity itemEntity) {
+        ItemInfoEntity itemInfoEntity = new ItemInfoEntity();
+        itemInfoEntity.setItemEntity(itemEntity);
+        return itemInfoEntity;
     }
 }

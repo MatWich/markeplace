@@ -1,6 +1,8 @@
 package com.agroniks.marketplace.user.jpa;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.propertyeditors.UUIDEditor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
