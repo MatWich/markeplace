@@ -1,5 +1,6 @@
 package com.agroniks.marketplace.item.jpa;
 
+import com.agroniks.marketplace.user.jpa.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,9 +23,13 @@ public class ItemInfoEntity {
 
     private int amount;
 
-    @OneToOne(mappedBy = "info")
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "items_id")
     private ItemEntity itemEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private UserEntity user;
 
     public ItemInfoEntity(ItemEntity itemEntity) {
         this.id = UUID.randomUUID();

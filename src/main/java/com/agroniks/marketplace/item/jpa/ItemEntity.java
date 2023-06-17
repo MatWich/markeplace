@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -25,14 +27,13 @@ public class ItemEntity {
     private String name;
     private String description;
     private double worth;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "itemEntity", cascade = CascadeType.ALL)
+    private Set<ItemInfoEntity> info = new HashSet<>();
+
     public ItemEntity(String name, String description, double worth) {
         this.name = name;
         this.description = description;
         this.worth = worth;
-//        this.info = new ItemInfoEntity(UUID.randomUUID(), 0, this);
     }
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "itemInfo_id", referencedColumnName = "id")
-    private ItemInfoEntity info;
 
 }

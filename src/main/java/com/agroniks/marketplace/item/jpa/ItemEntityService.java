@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -39,9 +37,7 @@ public class ItemEntityService {
         if (byName != null) {
             throw new ItemAlreadyExists("Item already in database");
         } else {
-            itemEntity.setInfo(createNewItemInfoEntity(itemEntity));
             itemRepository.save(itemEntity);
-
             return itemRepository.findByName(itemEntity.getName());
         }
     }
@@ -61,11 +57,5 @@ public class ItemEntityService {
             item.setInfo(itemEntity.getInfo());
             itemRepository.save(item);
         });
-    }
-
-    private ItemInfoEntity createNewItemInfoEntity(ItemEntity itemEntity) {
-        ItemInfoEntity itemInfoEntity = new ItemInfoEntity();
-        itemInfoEntity.setItemEntity(itemEntity);
-        return itemInfoEntity;
     }
 }

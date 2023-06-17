@@ -26,7 +26,6 @@ public class LoadDatabase {
             itemList.add(new ItemEntity("Item2", "Item2", 2.2));
             itemList.add(new ItemEntity("Item3", "Item3", 3.3));
 
-            itemList.forEach(itemEntity -> itemEntity.setInfo(new ItemInfoEntity(itemEntity)));
             itemList.forEach(itemEntity -> log.info("Preloading... " + itemEntityService.addNewItem(itemEntity)));
         };
     }

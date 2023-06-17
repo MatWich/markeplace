@@ -1,15 +1,15 @@
 package com.agroniks.marketplace.user.jpa;
 
 import com.agroniks.marketplace.item.jpa.ItemEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -25,9 +25,19 @@ public class UserEntity {
 
     private String name;
 
-//    private Map<ItemEntity, Integer> items;
+    @OneToMany(mappedBy = "user")
+    private Set<ItemInfoEntity> items = new HashSet<>();
 
     private double money;
 
+    public UserEntity(String name, double money) {
+        this.name = name;
+        this.money = money;
+    }
 
+    public UserEntity(UUID id, String name, double money) {
+        this.id = id;
+        this.name = name;
+        this.money = money;
+    }
 }
