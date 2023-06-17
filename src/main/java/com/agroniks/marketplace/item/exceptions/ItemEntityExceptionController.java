@@ -1,4 +1,4 @@
-package com.agroniks.marketplace.item.jpa;
+package com.agroniks.marketplace.item.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -36,4 +36,10 @@ public class ItemEntity {
         this.worth = worth;
     }
 
+    public ItemEntity(UUID id, String name, String description, double worth) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.worth = worth;
+    }
 }

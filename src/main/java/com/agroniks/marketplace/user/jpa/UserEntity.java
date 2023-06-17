@@ -7,16 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
+
 public class UserEntity {
 
     @Id
@@ -25,8 +22,8 @@ public class UserEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "user")
-    private Set<ItemInfoEntity> items = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<ItemInfoEntity> items = new ArrayList<>();
 
     private double money;
 

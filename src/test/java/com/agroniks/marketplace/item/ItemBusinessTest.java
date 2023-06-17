@@ -31,7 +31,6 @@ public class ItemBusinessTest {
         List<ItemEntity> items = getData();
         // when:
         when(itemEntityService.findAll()).thenReturn(Optional.of(items));
-
         // expected:
         Item expected = new Item("Item3", "Item3", 3.3);
         assertEquals(expected, itemService.getAllItemsOverGivenPrice(3.0).get().get(0));

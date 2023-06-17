@@ -1,6 +1,7 @@
 package com.agroniks.marketplace.item.jpa;
 
 import com.agroniks.marketplace.item.Item;
+import com.agroniks.marketplace.item.exceptions.ItemAlreadyExists;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class ItemEntityService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired ItemInfoEntityRepository itemInfoEntityRepository;
 
     public Optional<List<ItemEntity>> findAll() {
         return Optional.of(itemRepository.findAll());
@@ -57,5 +60,10 @@ public class ItemEntityService {
             item.setInfo(itemEntity.getInfo());
             itemRepository.save(item);
         });
+    }
+
+    @Transactional
+    public ItemInfoEntity createNewItemInfoEntity(ItemInfoEntity itemInfoEntity) {
+        return itemInfoEntityRepository.save(itemInfoEntity);
     }
 }
