@@ -24,7 +24,6 @@ public class ItemBusinessTest {
     @Autowired
     ItemService itemService;
 
-
     @Test
     void shouldReturnItemsOverPrice3() {
         // given:

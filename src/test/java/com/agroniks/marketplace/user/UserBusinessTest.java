@@ -1,34 +1,44 @@
 package com.agroniks.marketplace.user;
 
-import com.agroniks.marketplace.item.Item;
-import com.agroniks.marketplace.item.jpa.ItemEntity;
-import com.agroniks.marketplace.item.jpa.ItemRepository;
+import com.agroniks.marketplace.configuration.LoadDatabase;
+import com.agroniks.marketplace.item.jpa.*;
 import com.agroniks.marketplace.user.jpa.UserEntity;
 import com.agroniks.marketplace.user.jpa.UserEntityRepository;
 import com.agroniks.marketplace.user.jpa.UserEntityService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class UserBusinessTest {
 
-    @Autowired
+    @MockBean
     UserEntityRepository userEntityRepository;
 
-    @Autowired
+    @MockBean
+    ItemEntityService itemEntityService;
+
+    @MockBean
+    ItemInfoEntityRepository itemInfoEntityRepository;
+
+    @MockBean
     ItemRepository itemRepository;
 
     @Autowired
@@ -38,10 +48,17 @@ public class UserBusinessTest {
     @Test
     void shouldAddNewItemToUser() {
         // given:
-        List<ItemEntity> allItems = itemRepository.findAll();
-        List<UserEntity> allUsers = userEntityRepository.findAll();
+        UUID userUUID = UUID.randomUUID();
+        UUID itemUUID = UUID.randomUUID();
+
+        ItemEntity itemEntity = new ItemEntity(itemUUID, "TEST ITEM", "ITEM DESC", 3);
+        UserEntity user = new UserEntity(userUUID, "TESTER", 10);
         // when:
-        boolean successful = userEntityService.buyAsset(getUserWithCash(allUsers).getId(), findCheapestItem(allItems).getId(), 1);
+
+        when(userEntityRepository.findById(any())).thenReturn(Optional.of(user));
+        when(itemEntityService.findById(any())).thenReturn(Optional.of(itemEntity));
+        when(itemEntityService.createNewItemInfoEntity(any())).thenReturn(new ItemInfoEntity(UUID.randomUUID(), 2, itemEntity, user));
+        boolean successful = userEntityService.buyAsset(userUUID, itemUUID, 2);
         // expected:
         assertTrue(successful);
     }

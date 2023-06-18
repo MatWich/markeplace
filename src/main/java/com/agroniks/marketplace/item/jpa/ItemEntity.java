@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,9 +23,15 @@ import java.util.UUID;
 public class ItemEntity {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @ColumnDefault("random_uuid()")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+
 
     private String name;
     private String description;
