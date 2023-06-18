@@ -25,7 +25,6 @@ public class ItemInfoEntity {
 
     @ManyToOne
     @JoinColumn(name = "items_id")
-    @JsonBackReference
     private ItemEntity itemEntity;
 
     @ManyToOne

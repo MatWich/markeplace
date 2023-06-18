@@ -22,20 +22,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class UserBusinessTest {
 
-    @MockBean
+    @Autowired
     UserEntityRepository userEntityRepository;
 
     @MockBean
     ItemEntityService itemEntityService;
 
-    @MockBean
+    @Autowired
     ItemInfoEntityRepository itemInfoEntityRepository;
 
     @MockBean
@@ -53,14 +53,15 @@ public class UserBusinessTest {
 
         ItemEntity itemEntity = new ItemEntity(itemUUID, "TEST ITEM", "ITEM DESC", 3);
         UserEntity user = new UserEntity(userUUID, "TESTER", 10);
+        UserEntity savedUser = userEntityRepository.save(user);
+        userUUID = savedUser.getId();
         // when:
-
-        when(userEntityRepository.findById(any())).thenReturn(Optional.of(user));
+//        when(userEntityRepository.findById(any())).thenReturn(Optional.of(user));
         when(itemEntityService.findById(any())).thenReturn(Optional.of(itemEntity));
-        when(itemEntityService.createNewItemInfoEntity(any())).thenReturn(new ItemInfoEntity(UUID.randomUUID(), 2, itemEntity, user));
-        boolean successful = userEntityService.buyAsset(userUUID, itemUUID, 2);
+//        when(itemEntityService.createNewItemInfoEntity(any())).thenReturn(new ItemInfoEntity(itemInfoUUID, 2, itemEntity, user));
+        UserEntity userEntity = userEntityService.buyAsset(userUUID, itemUUID, 2);
         // expected:
-        assertTrue(successful);
+        assertTrue(userEntity.getMoney() < user.getMoney());
     }
 
 

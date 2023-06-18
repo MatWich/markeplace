@@ -2,20 +2,16 @@ package com.agroniks.marketplace.configuration;
 
 import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemEntityService;
-import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
-import com.agroniks.marketplace.item.jpa.ItemRepository;
 import com.agroniks.marketplace.user.jpa.UserEntity;
 import com.agroniks.marketplace.user.jpa.UserEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Configuration
 @Slf4j

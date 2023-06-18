@@ -36,15 +36,9 @@ public class UserEntityController {
     }
 
     @PostMapping("{userID}/items/{itemId}/amount/{amount}")
-    public ResponseEntity<Void> buySomeAssets(@PathVariable UUID userID, @PathVariable UUID itemId, @PathVariable Integer amount) {
-        boolean transactionSuccesses = userEntityService.buyAsset(userID, itemId, amount);
-
-        if (transactionSuccesses) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-
+    public ResponseEntity<UserEntity> buySomeAssets(@PathVariable UUID userID, @PathVariable UUID itemId, @PathVariable Integer amount) {
+        UserEntity modifiedUser = userEntityService.buyAsset(userID, itemId, amount);
+        return ResponseEntity.accepted().body(modifiedUser);
     }
 
     @PutMapping("{id}")

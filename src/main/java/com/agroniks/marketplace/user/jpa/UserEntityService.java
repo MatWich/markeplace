@@ -36,14 +36,13 @@ public class UserEntityService {
     }
 
     @Transactional
-    public void updateById(UUID id, User userEntity) {
-        userEntityRepository.findById(id)
-                .ifPresent(userEntity1 -> {
-                    userEntity1.setItems(userEntity.items());
-                    userEntity1.setName(userEntity.name());
-                    userEntity1.setMoney(userEntity.money());
-                    userEntityRepository.save(userEntity1);
-                });
+    public UserEntity updateById(UUID id, User userEntity) {
+        UserEntity user = userEntityRepository.findById(id).orElseThrow(() -> new RuntimeException("No user with id: " + id));
+        user.setName(userEntity.name());
+        user.setItems(userEntity.items());
+        user.setMoney(userEntity.money());
+        return userEntityRepository.save(user);
+
     }
 
     @Transactional
@@ -56,18 +55,17 @@ public class UserEntityService {
         return new User(userEntity.getName(), userEntity.getItems(), userEntity.getMoney());
     }
 
-    public boolean buyAsset(UUID userID, UUID itemId, Integer amount) {
+    public UserEntity buyAsset(UUID userID, UUID itemId, Integer amount) {
         ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new RuntimeException("No item with id: " + itemId));
         UserEntity user = userEntityRepository.findById(userID).orElseThrow(() -> new RuntimeException("No user with id: " + userID));
         double priceToPay = item.getWorth() * amount;
 
         if (user.getMoney() < priceToPay) {
-            return false;
+            throw new RuntimeException("Not enough money need: " + priceToPay + " have: " + user.getMoney());
         } else {
             user.setMoney(user.getMoney() - priceToPay);
             user.getItems().add(itemEntityService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
-            this.updateById(userID, convert(user));
+            return this.updateById(userID, convert(user));
         }
-        return true;
     }
 }
