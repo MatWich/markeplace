@@ -38,43 +38,56 @@ public class UserBusinessTest {
     @Autowired
     ItemInfoEntityRepository itemInfoEntityRepository;
 
-    @MockBean
-    ItemRepository itemRepository;
-
     @Autowired
     UserEntityService userEntityService;
 
-    // Might be unstable but for some unknown reason I cannot mock those beans. Maybe there need to be more mocked beans
     @Test
     void shouldAddNewItemToUser() {
         // given:
         UUID userUUID = UUID.randomUUID();
         UUID itemUUID = UUID.randomUUID();
-
         ItemEntity itemEntity = new ItemEntity(itemUUID, "TEST ITEM", "ITEM DESC", 3);
         UserEntity user = new UserEntity(userUUID, "TESTER", 10);
         UserEntity savedUser = userEntityRepository.save(user);
         userUUID = savedUser.getId();
         // when:
-//        when(userEntityRepository.findById(any())).thenReturn(Optional.of(user));
         when(itemEntityService.findById(any())).thenReturn(Optional.of(itemEntity));
-//        when(itemEntityService.createNewItemInfoEntity(any())).thenReturn(new ItemInfoEntity(itemInfoUUID, 2, itemEntity, user));
         UserEntity userEntity = userEntityService.buyAsset(userUUID, itemUUID, 2);
         // expected:
         assertTrue(userEntity.getMoney() < user.getMoney());
+        // clean up
+        userEntityRepository.deleteAll();
     }
 
+    @Test
+    void shouldThrowExceptionIfUserDoNotExists() {
+        // given:
+        UserEntity userWithNoMoney = userEntityRepository.save(new UserEntity("TESTER", 0.0));
+        ItemEntity expensiveItem = new ItemEntity("Expensive Item", "Very expensive item", 999.99);
+        // when:
+        when(itemEntityService.findById(any())).thenReturn(Optional.of(expensiveItem));
 
-    private UserEntity getUserWithCash(List<UserEntity> allUsers) {
-        return allUsers.stream()
-                .max(Comparator.comparing(UserEntity::getMoney))
-                .orElseThrow(() -> new RuntimeException("No users in db"));
+        // expect:
+        // TODO: update this when this situation will get its own exception
+        assertThrows(Exception.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), expensiveItem.getId(), 2));
+
+        // clean up
+        userEntityRepository.deleteAll();
     }
 
-    private ItemEntity findCheapestItem(List<ItemEntity> allItems) {
-        return allItems.stream()
-                .min(Comparator.comparing(ItemEntity::getWorth))
-                .orElseThrow(() -> new RuntimeException("No Items in db"));
+    @Test
+    void shouldThrowExceptionIfUserDosentHasEnoughMoney() {
+        // given:
+        UserEntity userWithNoMoney = userEntityRepository.save(new UserEntity("TESTER", 0.0));
+        ItemEntity tooExpensiveItem = new ItemEntity("Very expensive item", "Very expensive item", 999.99);
+        // when:
+        when(itemEntityService.findById(any())).thenReturn(Optional.of(tooExpensiveItem));
+
+        // expect:
+        assertThrows(Exception.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), tooExpensiveItem.getId(), 1));
+
+        // clean up
+        userEntityRepository.deleteAll();
     }
 }
 
