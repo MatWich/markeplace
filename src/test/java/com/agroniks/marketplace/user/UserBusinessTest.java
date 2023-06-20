@@ -1,7 +1,10 @@
 package com.agroniks.marketplace.user;
 
 import com.agroniks.marketplace.configuration.LoadDatabase;
+import com.agroniks.marketplace.item.exceptions.NoSuchItemException;
 import com.agroniks.marketplace.item.jpa.*;
+import com.agroniks.marketplace.user.exceptions.NoSuchUserException;
+import com.agroniks.marketplace.user.exceptions.NotEnoughMoneyException;
 import com.agroniks.marketplace.user.jpa.UserEntity;
 import com.agroniks.marketplace.user.jpa.UserEntityRepository;
 import com.agroniks.marketplace.user.jpa.UserEntityService;
@@ -62,14 +65,13 @@ public class UserBusinessTest {
     @Test
     void shouldThrowExceptionIfUserDoNotExists() {
         // given:
-        UserEntity userWithNoMoney = userEntityRepository.save(new UserEntity("TESTER", 0.0));
         ItemEntity expensiveItem = new ItemEntity("Expensive Item", "Very expensive item", 999.99);
         // when:
         when(itemEntityService.findById(any())).thenReturn(Optional.of(expensiveItem));
 
         // expect:
         // TODO: update this when this situation will get its own exception
-        assertThrows(Exception.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), expensiveItem.getId(), 2));
+        assertThrows(NoSuchUserException.class, () -> userEntityService.buyAsset(UUID.randomUUID(), expensiveItem.getId(), 2));
 
         // clean up
         userEntityRepository.deleteAll();
@@ -84,7 +86,20 @@ public class UserBusinessTest {
         when(itemEntityService.findById(any())).thenReturn(Optional.of(tooExpensiveItem));
 
         // expect:
-        assertThrows(Exception.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), tooExpensiveItem.getId(), 1));
+        assertThrows(NotEnoughMoneyException.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), tooExpensiveItem.getId(), 1));
+
+        // clean up
+        userEntityRepository.deleteAll();
+    }
+
+    @Test
+    void shouldThrowExceptionIfItemThatUserWantToBuyDoesNotExist() {
+        // given:
+        UserEntity userWithNoMoney = userEntityRepository.save(new UserEntity("TESTER", 0.0));
+        // when:
+//        when(itemEntityService.findById(any())).thenReturn(null);
+        // expect:
+        assertThrows(NoSuchItemException.class, () -> userEntityService.buyAsset(userWithNoMoney.getId(), UUID.randomUUID(), 1));
 
         // clean up
         userEntityRepository.deleteAll();

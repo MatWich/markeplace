@@ -1,5 +1,6 @@
 package com.agroniks.marketplace.user.jpa;
 
+import com.agroniks.marketplace.item.exceptions.NoSuchItemException;
 import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemEntityService;
 import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
@@ -58,8 +59,8 @@ public class UserEntityService {
     }
 
     public UserEntity buyAsset(UUID userID, UUID itemId, Integer amount) {
-        ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new NoSuchUserException("No item with id: " + itemId));
-        UserEntity user = userEntityRepository.findById(userID).orElseThrow(() -> new RuntimeException("No user with id: " + userID));
+        ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new NoSuchItemException("No item with id: " + itemId));
+        UserEntity user = userEntityRepository.findById(userID).orElseThrow(() -> new NoSuchUserException("No user with id: " + userID));
         double priceToPay = item.getWorth() * amount;
 
         if (user.getMoney() < priceToPay) {
