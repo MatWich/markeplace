@@ -2,6 +2,7 @@ package com.agroniks.marketplace.item.jpa;
 
 import com.agroniks.marketplace.item.Item;
 import com.agroniks.marketplace.item.exceptions.ItemAlreadyExists;
+import com.agroniks.marketplace.item.exceptions.NoSuchItemException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

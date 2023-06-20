@@ -4,6 +4,8 @@ import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemEntityService;
 import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
 import com.agroniks.marketplace.user.User;
+import com.agroniks.marketplace.user.exceptions.NoSuchUserException;
+import com.agroniks.marketplace.user.exceptions.NotEnoughMoneyException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +58,12 @@ public class UserEntityService {
     }
 
     public UserEntity buyAsset(UUID userID, UUID itemId, Integer amount) {
-        ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new RuntimeException("No item with id: " + itemId));
+        ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new NoSuchUserException("No item with id: " + itemId));
         UserEntity user = userEntityRepository.findById(userID).orElseThrow(() -> new RuntimeException("No user with id: " + userID));
         double priceToPay = item.getWorth() * amount;
 
         if (user.getMoney() < priceToPay) {
-            throw new RuntimeException("Not enough money need: " + priceToPay + " have: " + user.getMoney());
+            throw new NotEnoughMoneyException("Not enough money need: " + priceToPay + " have: " + user.getMoney());
         } else {
             user.setMoney(user.getMoney() - priceToPay);
             user.getItems().add(itemEntityService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
