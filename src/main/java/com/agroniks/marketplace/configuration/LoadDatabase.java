@@ -1,11 +1,9 @@
 package com.agroniks.marketplace.configuration;
 
-import com.agroniks.marketplace.item.ItemController;
 import com.agroniks.marketplace.item.ItemService;
 import com.agroniks.marketplace.item.jpa.ItemCommand;
-import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.user.jpa.UserEntity;
-import com.agroniks.marketplace.user.jpa.UserEntityService;
+import com.agroniks.marketplace.user.UserEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
