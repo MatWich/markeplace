@@ -110,6 +110,19 @@ public class ItemEndpointTests {
         assertThat(name).isEqualTo("Item4");
     }
 
+    @Test
+    void shouldThrowExceptionIfItemAlreadyExistsInDbWithTheSameName() {
+        ItemCommand itemCommand = new ItemCommand("Item3", "Item3", 3.3);
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<ItemCommand> request = new HttpEntity<>(itemCommand, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/item", request, String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
+        assertThat(response.getBody()).isEqualTo("Item already in database");
+    }
+
     /* DELETE MAPPINGS MAYBE THERE WILL BE SOME CONDITIONS? */
 
     /* PUT MAPPINGS */

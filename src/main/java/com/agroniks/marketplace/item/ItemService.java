@@ -43,7 +43,6 @@ public class ItemService {
         return itemsEntitiesOverGivenPrice;
     }
 
-
     public Page<ItemEntity> findAll(PageRequest pr) {
         return itemRepository.findAll(pr);
     }

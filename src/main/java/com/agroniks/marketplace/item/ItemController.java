@@ -16,10 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/*
- * This class should only perform business logic and do not perform any db connection
- */
-
 @RestController
 @RequestMapping("/api/v1/item")
 @Slf4j

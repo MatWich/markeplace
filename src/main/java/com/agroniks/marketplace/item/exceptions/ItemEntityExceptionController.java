@@ -11,7 +11,7 @@ public class ItemEntityExceptionController {
 
     @ResponseBody
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     String itemAlreadyExists(ItemAlreadyExists ex) {
         return ex.getMessage();
     }
