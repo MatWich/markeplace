@@ -27,7 +27,6 @@ public class ItemJsonTest {
     @Test
     void itemSerializationTest() throws IOException {
         ItemEntity itemEntity = new ItemEntity(null, "Item 1", "Item 1", 1.1);
-        System.out.println(UUID.randomUUID());
         assertThat(json.write(itemEntity)).isStrictlyEqualToJson("item.json");
 
         assertThat(json.write(itemEntity)).hasEmptyJsonPathValue("@.id");
