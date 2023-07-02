@@ -8,14 +8,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Entity
+@Entity(name = "ITEM_ENTITY")
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "items")

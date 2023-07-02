@@ -1,7 +1,9 @@
 package com.agroniks.marketplace.configuration;
 
+import com.agroniks.marketplace.item.ItemController;
+import com.agroniks.marketplace.item.ItemService;
+import com.agroniks.marketplace.item.jpa.ItemCommand;
 import com.agroniks.marketplace.item.jpa.ItemEntity;
-import com.agroniks.marketplace.item.jpa.ItemEntityService;
 import com.agroniks.marketplace.user.jpa.UserEntity;
 import com.agroniks.marketplace.user.jpa.UserEntityService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +20,14 @@ import java.util.UUID;
 public class LoadDatabase {
 
     @Bean
-    CommandLineRunner initDatabase(ItemEntityService itemEntityService, UserEntityService userEntityService) {
+    CommandLineRunner initDatabase(UserEntityService userEntityService, ItemService itemService) {
         return args -> {
-            List<ItemEntity> itemList = new ArrayList<>();
-            itemList.add(new ItemEntity("Item1", "Item1", 1.1));
-            itemList.add(new ItemEntity("Item2", "Item2", 2.2));
-            itemList.add(new ItemEntity("Item3", "Item3", 3.3));
+            List<ItemCommand> itemList = new ArrayList<>();
+            itemList.add(new ItemCommand("Item1", "Item1", 1.1));
+            itemList.add(new ItemCommand("Item2", "Item2", 2.2));
+            itemList.add(new ItemCommand("Item3", "Item3", 3.3));
 
-            itemList.forEach(itemEntity -> log.info("Preloading... " + itemEntityService.addNewItem(itemEntity)));
+            itemList.forEach(itemEntity -> log.info("Preloading... " + itemService.addNewItem(itemEntity)));
 
             log.info("Loading users to DB...");
             log.info(userEntityService.save(new UserEntity(UUID.randomUUID(), "Buyer Bob", 100.20)).toString());

@@ -2,6 +2,10 @@ package com.agroniks.marketplace.user.jpa;
 
 import com.agroniks.marketplace.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,8 +22,14 @@ public class UserEntityController {
     private UserEntityService userEntityService;
 
     @GetMapping("")
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
-        return ResponseEntity.of(userEntityService.findAll());
+    public ResponseEntity<Iterable<UserEntity>> getAllUsers(Pageable pageable) {
+        Page<UserEntity> page = userEntityService.findAll(
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        pageable.getSortOr(Sort.by(Sort.Direction.ASC, "name"))
+                )).get();
+        return ResponseEntity.of(Optional.of(page.getContent()));
     }
 
     @GetMapping("{name}")
@@ -43,7 +53,8 @@ public class UserEntityController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updateUserInfo(@PathVariable("id") UUID id, @RequestBody User user) {
-        userEntityService.updateById(id, user);
+        UserEntity newUser = userEntityService.updateById(id, user);
+
         return ResponseEntity.noContent().build();
     }
 

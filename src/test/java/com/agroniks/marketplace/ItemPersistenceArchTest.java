@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
-@AnalyzeClasses(packages = "com.agroniks.marketplace.item.jpa", importOptions = {ImportOption.DoNotIncludeTests.class})
+@AnalyzeClasses(packages = "com.agroniks.marketplace", importOptions = {ImportOption.DoNotIncludeTests.class})
 public class ItemPersistenceArchTest {
 
 

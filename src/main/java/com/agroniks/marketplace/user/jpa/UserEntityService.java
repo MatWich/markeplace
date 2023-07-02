@@ -1,8 +1,8 @@
 package com.agroniks.marketplace.user.jpa;
 
+import com.agroniks.marketplace.item.ItemService;
 import com.agroniks.marketplace.item.exceptions.NoSuchItemException;
 import com.agroniks.marketplace.item.jpa.ItemEntity;
-import com.agroniks.marketplace.item.jpa.ItemEntityService;
 import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
 import com.agroniks.marketplace.user.User;
 import com.agroniks.marketplace.user.exceptions.NoSuchUserException;
@@ -10,6 +10,8 @@ import com.agroniks.marketplace.user.exceptions.NotEnoughMoneyException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,10 +26,10 @@ public class UserEntityService {
     private UserEntityRepository userEntityRepository;
 
     @Autowired
-    private ItemEntityService itemEntityService;
+    private ItemService itemService;
 
-    public Optional<List<UserEntity>> findAll() {
-        return Optional.of(userEntityRepository.findAll());
+    public Optional<Page<UserEntity>> findAll(PageRequest pg) {
+        return Optional.of(userEntityRepository.findAll(pg));
     }
 
     public List<UserEntity> findByName(String name) {
@@ -59,7 +61,7 @@ public class UserEntityService {
     }
 
     public UserEntity buyAsset(UUID userID, UUID itemId, Integer amount) {
-        ItemEntity item = itemEntityService.findById(itemId).orElseThrow(() -> new NoSuchItemException("No item with id: " + itemId));
+        ItemEntity item = itemService.findById(itemId).orElseThrow(() -> new NoSuchItemException("No item with id: " + itemId));
         UserEntity user = userEntityRepository.findById(userID).orElseThrow(() -> new NoSuchUserException("No user with id: " + userID));
         double priceToPay = item.getWorth() * amount;
 
@@ -67,7 +69,7 @@ public class UserEntityService {
             throw new NotEnoughMoneyException("Not enough money need: " + priceToPay + " have: " + user.getMoney());
         } else {
             user.setMoney(user.getMoney() - priceToPay);
-            user.getItems().add(itemEntityService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
+            user.getItems().add(itemService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
             return this.updateById(userID, convert(user));
         }
     }
