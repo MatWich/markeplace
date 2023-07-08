@@ -1,7 +1,6 @@
 package com.agroniks.marketplace.item;
 
 import com.agroniks.marketplace.item.jpa.ItemCommand;
-import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemRepository;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -41,7 +40,7 @@ public class ItemEndpointTests {
         itemList.add(new ItemCommand("Item2", "Item 2", 2.2));
         itemList.add(new ItemCommand("Item3", "Item 3", 3.3));
 
-        itemList.forEach(itemEntity -> itemService.addNewItem(itemEntity));
+        itemList.forEach(itemEntity -> itemService.save(itemEntity));
     }
 
     /* GET MAPPINGS */

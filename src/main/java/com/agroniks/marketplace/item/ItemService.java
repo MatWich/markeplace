@@ -51,7 +51,7 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public ItemEntity addNewItem(ItemCommand item) {
+    public ItemEntity save(ItemCommand item) {
         ItemEntity byName = itemRepository.findByName(item.name());
         if (byName != null) {
             throw new ItemAlreadyExists("Item already in database");
@@ -61,6 +61,7 @@ public class ItemService {
         }
     }
 
+    @Transactional
     public void deleteById(UUID id) {
         itemRepository.deleteById(id);
     }

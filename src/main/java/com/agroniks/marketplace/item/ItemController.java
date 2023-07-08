@@ -54,7 +54,7 @@ public class ItemController {
 
     @PostMapping("")
     public ResponseEntity<Void> addNewItem(@RequestBody ItemCommand itemCommand) {
-        ItemEntity itemEntity = itemService.addNewItem(itemCommand);
+        ItemEntity itemEntity = itemService.save(itemCommand);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/api/persistence/items/{id}")
