@@ -1,12 +1,14 @@
-package com.agroniks.marketplace.user.jpa;
+package com.agroniks.marketplace.user;
 
 import com.agroniks.marketplace.item.ItemService;
 import com.agroniks.marketplace.item.exceptions.NoSuchItemException;
 import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemInfoEntity;
-import com.agroniks.marketplace.user.User;
 import com.agroniks.marketplace.user.exceptions.NoSuchUserException;
 import com.agroniks.marketplace.user.exceptions.NotEnoughMoneyException;
+import com.agroniks.marketplace.user.jpa.UserCommand;
+import com.agroniks.marketplace.user.jpa.UserEntity;
+import com.agroniks.marketplace.user.jpa.UserEntityRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,36 +29,27 @@ public class UserEntityService {
     @Autowired
     private ItemService itemService;
 
-    public Optional<Page<UserEntity>> findAll(PageRequest pg) {
-        return Optional.of(userEntityRepository.findAll(pg));
+    public Optional<Page<UserEntity>> findAll(PageRequest pr) {
+        return Optional.of(userEntityRepository.findAll(pr));
     }
 
-    public List<UserEntity> findByName(String name) {
-        return userEntityRepository.findByName(name);
-    }
-
-    public UserEntity save(UserEntity userEntity) {
-        return userEntityRepository.save(userEntity);
+    public UserEntity save(UserCommand user) {
+        return userEntityRepository.save(new UserEntity(user.name(), user.money()));
     }
 
     @Transactional
-    public UserEntity updateById(UUID id, User userEntity) {
+    public UserEntity updateById(UUID id, UserCommand userCommandEntity) {
         UserEntity user = userEntityRepository.findById(id).orElseThrow(() -> new RuntimeException("No user with id: " + id));
-        user.setName(userEntity.name());
-        user.setItems(userEntity.items());
-        user.setMoney(userEntity.money());
+        user.setName(userCommandEntity.name());
+        user.setItems(userCommandEntity.items());
+        user.setMoney(userCommandEntity.money());
         return userEntityRepository.save(user);
 
     }
 
     @Transactional
     public void deleteById(UUID id) {
-        log.info(id.toString());
         userEntityRepository.deleteById(id);
-    }
-
-    private User convert(UserEntity userEntity) {
-        return new User(userEntity.getName(), userEntity.getItems(), userEntity.getMoney());
     }
 
     public UserEntity buyAsset(UUID userID, UUID itemId, Integer amount) {
@@ -70,7 +62,11 @@ public class UserEntityService {
         } else {
             user.setMoney(user.getMoney() - priceToPay);
             user.getItems().add(itemService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
-            return this.updateById(userID, convert(user));
+            return this.updateById(userID, new UserCommand(user.getName(), user.getItems(), user.getMoney()));
         }
+    }
+
+    public Optional<UserEntity> findById(UUID id) {
+        return userEntityRepository.findById(id);
     }
 }

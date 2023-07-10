@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ItemEndpointTests {
 
     @Autowired
@@ -63,7 +63,7 @@ public class ItemEndpointTests {
 
     @Test
     void shouldNotReturnAnItemWithUnknownId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/item/" + UUID.randomUUID().toString(), String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/item/" + UUID.randomUUID(), String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isBlank();
     }

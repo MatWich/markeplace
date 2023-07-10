@@ -1,6 +1,7 @@
-package com.agroniks.marketplace.user.jpa;
+package com.agroniks.marketplace.user;
 
-import com.agroniks.marketplace.user.User;
+import com.agroniks.marketplace.user.jpa.UserCommand;
+import com.agroniks.marketplace.user.jpa.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/persistence/users")
+@RequestMapping("/api/v1/users")
 public class UserEntityController {
 
     @Autowired
@@ -32,16 +32,17 @@ public class UserEntityController {
         return ResponseEntity.of(Optional.of(page.getContent()));
     }
 
-    @GetMapping("{name}")
-    public ResponseEntity<List<UserEntity>> getUsersByName(@PathVariable("name") String name) {
-        return ResponseEntity.of(Optional.ofNullable(userEntityService.findByName(name)));
+    @GetMapping("/{id}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable("id") UUID id) {
+        return ResponseEntity.of(userEntityService.findById(id));
     }
 
     @PostMapping("")
-    public ResponseEntity<UUID> saveNewUser(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<UUID> saveNewUser(@RequestBody UserCommand user) {
+        UserEntity newUser = userEntityService.save(user);
         return ResponseEntity.created(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(userEntityService.save(userEntity))
+                .buildAndExpand(newUser.getId())
                 .toUri()).build();
     }
 
@@ -52,8 +53,8 @@ public class UserEntityController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateUserInfo(@PathVariable("id") UUID id, @RequestBody User user) {
-        UserEntity newUser = userEntityService.updateById(id, user);
+    public ResponseEntity<Void> updateUserInfo(@PathVariable("id") UUID id, @RequestBody UserCommand userCommand) {
+        UserEntity newUser = userEntityService.updateById(id, userCommand);
 
         return ResponseEntity.noContent().build();
     }
