@@ -47,7 +47,10 @@ public class ItemEndpointTests {
 
     @Test
     void shouldReturnOneItemFromDbInAscOrder() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/item?page=0&size=1,asc", String.class);
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .getForEntity("/api/v1/item?page=0&size=1,asc", String.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -63,20 +66,26 @@ public class ItemEndpointTests {
 
     @Test
     void shouldNotReturnAnItemWithUnknownId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/item/" + UUID.randomUUID(), String.class);
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .getForEntity("/api/v1/item/" + UUID.randomUUID(), String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isBlank();
     }
 
     @Test
     void shouldReturnAllItemsThatWorthIsLowerThan3() {
-        ResponseEntity<List> response = restTemplate.getForEntity("/api/v1/item/below/3", List.class);
+        ResponseEntity<List> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .getForEntity("/api/v1/item/below/3", List.class);
         assertThat(response.getBody().size()).isEqualTo(2);
     }
 
     @Test
     void shouldReturnAllItemsThatWorthIsOver3() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/item/over/3", String.class);
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .getForEntity("/api/v1/item/over/3", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -94,14 +103,18 @@ public class ItemEndpointTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<ItemCommand> request = new HttpEntity<ItemCommand>(itemCommand, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/item", request, String.class);
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .postForEntity("/api/v1/item", request, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         var locationHeader = response.getHeaders().getLocation();
         String idOfNewItem = StringUtils.substringAfterLast(locationHeader.toString(), "/");
 
-        ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v1/item/" + idOfNewItem, String.class);
+        ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .getForEntity("/api/v1/item/" + idOfNewItem, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
@@ -116,7 +129,9 @@ public class ItemEndpointTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<ItemCommand> request = new HttpEntity<>(itemCommand, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/item", request, String.class);
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .postForEntity("/api/v1/item", request, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
         assertThat(response.getBody()).isEqualTo("Item already in database");

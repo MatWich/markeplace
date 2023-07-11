@@ -69,4 +69,6 @@ public class UserEntityService {
     public Optional<UserEntity> findById(UUID id) {
         return userEntityRepository.findById(id);
     }
+
+
 }
