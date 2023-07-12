@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class LoadDatabase {
             itemList.forEach(itemEntity -> log.info("Preloading... " + itemService.save(itemEntity)));
 
             log.info("Loading users to DB...");
-            log.info(userEntityService.save(new UserCommand("Buyer Bob", null, 100.20)).toString());
-            log.info(userEntityService.save(new UserCommand( "Seller Bob", null,0.00)).toString());
+            log.info(userEntityService.save(new UserCommand("Buyer Bob", null, 100.20, "BBob", "BBob_pass", null)).toString());
+            log.info(userEntityService.save(new UserCommand( "Seller Bob", null,0.00, "SBob", "SBob_pass", null)).toString());
         };
     }
 }

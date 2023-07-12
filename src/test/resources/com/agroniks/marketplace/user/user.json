@@ -2,5 +2,8 @@
   "id": null,
   "name": "USER1",
   "money": 20.0,
-  "items":[]
+  "items":[],
+  "username": "USER1_LOGIN",
+  "password": "USER1_PASS",
+  "roles": ["NORMAL"]
 }

@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, UUID>, PagingAndSortingRepository<UserEntity, UUID> {
     List<UserEntity> findByName(String name);
+    UserEntity findUserByUsername(String username);
 }

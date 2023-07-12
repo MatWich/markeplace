@@ -35,10 +35,10 @@ public class UserEndpointTest {
         userRepository.deleteAll();
 
         List<UserCommand> userList = new ArrayList<>();
-        userList.add(new UserCommand("USER1", null, 10.0));
-        userList.add(new UserCommand("USER2", null, 20.0));
-        userList.add(new UserCommand("USER3", null, 30.0));
-
+        userList.add(new UserCommand("USER1", null, 10.0, "USER1_LOGIN", "USER1_PASS", null));
+        userList.add(new UserCommand("USER2", null, 20.0, "USER1_LOGIN", "USER1_PASS", null));
+        userList.add(new UserCommand("USER3", null, 30.0, "USER1_LOGIN", "USER1_PASS", null));
+        userList.add(new UserCommand("Admin", null, 100.0, "Admin", "Zaq12wsx", null));
         userList.forEach(userCommand -> userService.save(userCommand));
     }
 
@@ -47,13 +47,14 @@ public class UserEndpointTest {
         ResponseEntity<List> response = restTemplate
                 .withBasicAuth("Admin", "Zaq12wsx")
                 .getForEntity("/api/v1/users?page=0&size=2", List.class);
+        assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().size()).isEqualTo(2);
     }
 
     @Test
     @DirtiesContext
     void shouldAddNewUserToDbAndReturnIdOfHim() {
-        UserCommand userCommand = new UserCommand("USER4", null, 40.0);
+        UserCommand userCommand = new UserCommand("USER4", null, 40.0, "USER4_LOGIN", "USER4_PASS", null);
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<UserCommand> request = new HttpEntity<>(userCommand, headers);

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,12 +30,17 @@ public class UserEntityService {
     @Autowired
     private ItemService itemService;
 
+
     public Optional<Page<UserEntity>> findAll(PageRequest pr) {
         return Optional.of(userEntityRepository.findAll(pr));
     }
 
+    public List<UserEntity> findALL(){
+        return userEntityRepository.findAll();
+    }
+
     public UserEntity save(UserCommand user) {
-        return userEntityRepository.save(new UserEntity(user.name(), user.money()));
+       return userEntityRepository.save(new UserEntity(user.name(), user.items(), user.money(), user.username(), user.password(), user.roles()));
     }
 
     @Transactional
@@ -62,13 +68,12 @@ public class UserEntityService {
         } else {
             user.setMoney(user.getMoney() - priceToPay);
             user.getItems().add(itemService.createNewItemInfoEntity(new ItemInfoEntity(UUID.randomUUID(), amount, item, user)));
-            return this.updateById(userID, new UserCommand(user.getName(), user.getItems(), user.getMoney()));
+            return this.updateById(userID, new UserCommand(user.getName(), user.getItems(), user.getMoney(), user.getUsername(), user.getPassword(), user.getRoles()));
         }
     }
 
     public Optional<UserEntity> findById(UUID id) {
         return userEntityRepository.findById(id);
     }
-
 
 }
