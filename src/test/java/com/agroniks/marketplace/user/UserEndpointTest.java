@@ -34,11 +34,12 @@ public class UserEndpointTest {
     void setUp() {
         userRepository.deleteAll();
 
+        List<String> adminRoles = List.of("ADMIN", "NORMAL");
         List<UserCommand> userList = new ArrayList<>();
         userList.add(new UserCommand("USER1", null, 10.0, "USER1_LOGIN", "USER1_PASS", null));
         userList.add(new UserCommand("USER2", null, 20.0, "USER1_LOGIN", "USER1_PASS", null));
         userList.add(new UserCommand("USER3", null, 30.0, "USER1_LOGIN", "USER1_PASS", null));
-        userList.add(new UserCommand("Admin", null, 100.0, "Admin", "Zaq12wsx", null));
+        userList.add(new UserCommand("Admin", null, 100.0, "Admin", "Zaq12wsx", adminRoles));
         userList.forEach(userCommand -> userService.save(userCommand));
     }
 
