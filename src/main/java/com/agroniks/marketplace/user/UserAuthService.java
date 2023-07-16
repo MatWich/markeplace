@@ -19,6 +19,7 @@ public class UserAuthService implements UserDetailsService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserEntityRepository userEntityRepository;
 
