@@ -55,7 +55,6 @@ public class UserEntityController {
     @PutMapping("{id}")
     public ResponseEntity<Void> updateUserInfo(@PathVariable("id") UUID id, @RequestBody UserCommand userCommand) {
         UserEntity newUser = userEntityService.updateById(id, userCommand);
-
         return ResponseEntity.noContent().build();
     }
 

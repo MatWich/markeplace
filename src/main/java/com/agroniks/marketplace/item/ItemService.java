@@ -66,6 +66,10 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
+    public boolean existsById(UUID id) {
+        return itemRepository.existsById(id);
+    }
+
     @Transactional
     public void updateById(UUID id, ItemCommand item) {
         itemRepository.findById(id)

@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, UUID> {
     ItemEntity findByName(String name);
+    boolean existsById(UUID id);
 }

@@ -1,6 +1,7 @@
 package com.agroniks.marketplace.item;
 
 import com.agroniks.marketplace.item.jpa.ItemCommand;
+import com.agroniks.marketplace.item.jpa.ItemEntity;
 import com.agroniks.marketplace.item.jpa.ItemRepository;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -138,6 +139,28 @@ public class ItemEndpointTests {
     }
 
     /* DELETE MAPPINGS MAYBE THERE WILL BE SOME CONDITIONS? */
+
+    @Test
+    @DirtiesContext
+    void shouldReturnNoContentIfRecordGotDeleted() {
+        ItemEntity itemToDelete = itemRepository.findAll().get(0);
+        ResponseEntity<Void> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .exchange("/api/v1/item/" + itemToDelete.getId(),
+                        HttpMethod.DELETE, null, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldReturnNotFoundIfRecordDoesNotExists() {
+        ResponseEntity<Void> response = restTemplate
+                .withBasicAuth("Admin", "Zaq12wsx")
+                .exchange("/api/v1/item/" + UUID.randomUUID(), HttpMethod.DELETE, null, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 
     /* PUT MAPPINGS */
 }

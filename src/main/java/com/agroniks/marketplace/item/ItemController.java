@@ -63,8 +63,12 @@ public class ItemController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable UUID id) {
-        itemService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        if (itemService.existsById(id)) {
+            itemService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+
     }
 
     @PutMapping("{id}")
