@@ -20,7 +20,7 @@ WORKDIR $APP_HOME
 COPY --from=BUILDER $APP_HOME/build/libs/$APP_NAME .
 CMD chmod +x $APP_NAME
 EXPOSE 8080
-CMD ["java", "-jar", "./marketplace-0.0.1-SNAPSHOT.jar"]
+CMD java -jar ./${APP_NAME}
 
 
 
